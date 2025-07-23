@@ -45,7 +45,7 @@ Follow these instructions to set up and run the project on your local machine.
     
     ```bash
     git clone https://github.com/Lakshit0510/finance_Tracker.git
-    cd finance_tracker
+    cd finance_Tracker
     ```
 
 2.  **Set up the Backend:**
