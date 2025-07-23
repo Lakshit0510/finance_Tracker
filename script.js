@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const className = txClassInput.value.trim();
         const time = txTimeInput.value;
 
-        if (!userId || isNaN(amount) || amount <= 0 || !className || !time) {
+        if (!userId || isNaN(amount) || !className || !time) {
             alert("Please fill out all transaction fields correctly.");
             return;
         }
