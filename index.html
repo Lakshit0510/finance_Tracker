@@ -4,14 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finance Processing Agent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>Finance Processing Agent</h1>
+        <div class="header">
+            <h1>Finance Agent</h1>
+            <div class="user-management">
+                <div class="user-selection">
+                    <label for="user-select">Current User:</label>
+                    <select id="user-select"></select>
+                </div>
+                <div class="add-user-container">
+                    <input type="text" id="new-user-input" placeholder="New User ID">
+                    <button id="add-user-btn">Add User</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h3>Visualizations</h3>
+            <div class="chart-buttons">
+                <button id="show-category-chart-btn">Spending by Category</button>
+                <button id="show-time-chart-btn">Spending Over Time</button>
+            </div>
+            <canvas id="myChart"></canvas>
+        </div>
+
         <div id="chat-box"></div>
-        <input type="text" id="query" placeholder="Ask about your finances...">
-        <button onclick="sendQuery()">Send</button>
+        <div id="loading-indicator" class="hidden">
+            <span></span><span></span><span></span>
+        </div>
+
+        <div class="transaction-section">
+             <button id="toggle-form-btn">Add New Transaction</button>
+             <div id="add-transaction-form" class="hidden">
+                <h3>Add a Transaction</h3>
+                <input type="number" id="tx-amount" placeholder="Amount (e.g., 55.25)">
+                <input type="text" id="tx-class" placeholder="Category (e.g., Dining)">
+                <input type="date" id="tx-time" placeholder="Date">
+                <button id="add-tx-btn">Submit Transaction</button>
+             </div>
+        </div>
+
+        <div class="input-area">
+            <input type="text" id="query-input" placeholder="e.g., spending breakdown">
+            <button id="send-btn">Send</button>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
