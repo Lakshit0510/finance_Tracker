@@ -1,1 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Processing Agent</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-top">
+                <h1>Finance Agent</h1>
+                <button id="logout-btn">Logout</button>
+            </div>
+            <p id="welcome-message">Welcome, user!</p>
+        </header>
 
+        <aside class="sidebar">
+            <section class="chart-container">
+                <h3>Visualizations</h3>
+                <div class="chart-buttons">
+                    <button id="show-category-chart-btn" class="btn btn-secondary">By Category</button>
+                    <button id="show-time-chart-btn" class="btn btn-secondary">Over Time</button>
+                </div>
+                <canvas id="myChart"></canvas>
+            </section>
+
+            <section class="transaction-section">
+                <button id="toggle-form-btn" class="btn btn-secondary">Add New Transaction</button>
+                <form id="add-transaction-form" class="hidden">
+                    <h3>New Transaction</h3>
+                    <input type="number" id="tx-amount" placeholder="Amount (e.g., -15.50 for income)">
+                    <input type="text" id="tx-class" placeholder="Category (e.g., Dining)">
+                    <input type="date" id="tx-time">
+                    <button id="add-tx-btn" type="button" class="btn btn-primary">Submit</button>
+                </form>
+            </section>
+        </aside>
+
+        <main class="chat-interface">
+            <div id="chat-box">
+                 </div>
+            <div class="input-area">
+                <input type="text" id="query-input" placeholder="Ask about your finances...">
+                <button id="send-btn" class="btn btn-primary">➤</button>
+            </div>
+        </main>
+
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
