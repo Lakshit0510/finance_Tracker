@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const txClassInput = document.getElementById("tx-class");
     const txTimeInput = document.getElementById("tx-time");
 
-    const API_BASE_URL = "http://127.0.0.1:8000";
+    const API_BASE_URL = "https://finance-tracker-lbql.onrender.com/";
 
     // --- Initial Setup ---
     fetchCurrentUser();
