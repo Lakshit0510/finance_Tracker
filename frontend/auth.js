@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://finance-tracker-lbql.onrender.com/"; 
+const API_BASE_URL = "https://finance-tracker-lbql.onrender.com"; 
 const loginForm = document.getElementById("login-form");
 const registerForm = document.getElementById("register-form");
 const errorMessage = document.getElementById("error-message");
@@ -62,3 +62,4 @@ if (registerForm) {
     });
 
 }
+
