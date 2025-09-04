@@ -19,7 +19,6 @@ from sqlalchemy.orm import Session, sessionmaker
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 API_KEY = os.getenv("API_KEY") # For the external AI service
-# !!! IMPORTANT: Replace this URL with your actual AI service endpoint !!!
 AI_SERVICE_URL = "https://api.asi1.ai/v1/chat/completions" 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -145,7 +144,7 @@ def determine_function_call(query: str, userid: str, db: Session):
             return func(userid, db)
     return None
 
-# --- AI FALLBACK FUNCTION (Re-integrated) ---
+# --- AI FALLBACK FUNCTION  ---
 def fetch_llm_response(query: str, userid: str, db: Session):
     if not API_KEY:
         return "AI service is not configured. Please set the API_KEY in your .env file."
@@ -207,6 +206,48 @@ async def api_query(request: QueryRequest, db: Session = Depends(get_db), curren
 @app.get("/users/me", response_model=User)
 async def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
+
+@app.get("/transactions", response_model=List[Transaction])
+async def get_transactions(
+    db: Session = Depends(get_db), 
+    current_user: User = Depends(get_current_user)
+):
+    """Fetches all transactions for the currently authenticated user."""
+    return db_get_transactions_by_user(db, current_user.username)
+
+@app.delete("/transactions/{transaction_id}", response_model=dict)
+async def delete_transaction(
+    transaction_id: int, 
+    db: Session = Depends(get_db), 
+    current_user: User = Depends(get_current_user)
+):
+    """Deletes a specific transaction by its ID, ensuring it belongs to the user."""
+    transaction_to_delete = db.query(TransactionDB).filter(TransactionDB.id == transaction_id).first()
+    
+    if not transaction_to_delete:
+        raise HTTPException(status_code=404, detail="Transaction not found")
+        
+    if transaction_to_delete.userid != current_user.username:
+        raise HTTPException(status_code=403, detail="Not authorized to delete this transaction")
+        
+    db.delete(transaction_to_delete)
+    db.commit()
+    
+    return {"message": "Transaction deleted successfully"}
+
+@app.delete("/users/me", response_model=dict)
+async def delete_user_and_transactions(
+    db: Session = Depends(get_db), 
+    current_user: User = Depends(get_current_user)
+):
+    """Deletes the currently authenticated user and all of their associated transactions."""
+    userid_to_delete = current_user.username
+    
+    db.query(TransactionDB).filter(TransactionDB.userid == userid_to_delete).delete(synchronize_session=False)
+    db.query(UserDB).filter(UserDB.username == userid_to_delete).delete(synchronize_session=False)
+    db.commit()
+    
+    return {"message": f"User {userid_to_delete} and all data have been deleted."}
 
 @app.post("/add_transaction", response_model=Transaction)
 async def add_transaction(transaction: TransactionCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
