@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             transactions.forEach(tx => {
-                const isExpense = tx.amount > 0;
+                const isExpense = tx.amount < 0;
                 const li = document.createElement("li");
                 li.innerHTML = `
                     <div class="transaction-details">
@@ -250,4 +250,5 @@ document.addEventListener("DOMContentLoaded", () => {
         const now = new Date();
         txTimeInput.value = now.toISOString().split('T')[0];
     }
+
 });
