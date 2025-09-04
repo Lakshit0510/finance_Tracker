@@ -25,11 +25,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const txAmountInput = document.getElementById("tx-amount");
     const txClassInput = document.getElementById("tx-class");
     const txTimeInput = document.getElementById("tx-time");
+    const transactionList = document.getElementById("transaction-list");
+    const deleteAccountBtn = document.getElementById("delete-account-btn");
 
     const API_BASE_URL = "https://finance-tracker-lbql.onrender.com";
 
     // --- Initial Setup ---
     fetchCurrentUser();
+    fetchAndDisplayTransactions();
     setDefaultDate();
 
     // --- Event Listeners ---
@@ -45,7 +48,13 @@ document.addEventListener("DOMContentLoaded", () => {
     addTxBtn.addEventListener("click", addTransaction);
     showCategoryChartBtn.addEventListener("click", () => renderChart('category'));
     showTimeChartBtn.addEventListener("click", () => renderChart('time'));
-
+    deleteAccountBtn.addEventListener("click", handleDeleteAccount);
+    transactionList.addEventListener("click", (e) => {
+        if (e.target && e.target.classList.contains("delete-tx-btn")) {
+            const txId = e.target.getAttribute("data-id");
+            handleDeleteTransaction(txId);
+        }
+    });
 
     // --- Core Functions ---
     async function fetchCurrentUser() {
@@ -98,6 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify({ amount, class_name: className, time }),
             });
             appendMessage(`Successfully added transaction.`, "system-notification");
+            fetchAndDisplayTransactions();
             txAmountInput.value = "";
             txClassInput.value = "";
             setDefaultDate();
@@ -140,6 +150,74 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         } catch (error) {
             console.error("Error rendering chart:", error);
+        }
+    }
+    async function fetchAndDisplayTransactions() {
+        try {
+            const response = await fetchWithAuth(`${API_BASE_URL}/transactions`);
+            const transactions = await response.json();
+            
+            transactionList.innerHTML = ""; // Clear the list
+            if (transactions.length === 0) {
+                transactionList.innerHTML = "<li class='empty-state'>No transactions yet.</li>";
+                return;
+            }
+
+            transactions.forEach(tx => {
+                const isExpense = tx.amount > 0;
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <div class="transaction-details">
+                        <span class="transaction-class">${tx.class_name}</span>
+                        <span class="transaction-info">${tx.time}</span>
+                    </div>
+                    <div class="transaction-amount ${isExpense ? 'expense' : 'income'}">
+                        ${isExpense ? '-' : '+'}$${Math.abs(tx.amount).toFixed(2)}
+                    </div>
+                    <button class="delete-tx-btn" data-id="${tx.id}" title="Delete Transaction">&times;</button>
+                `;
+                transactionList.appendChild(li);
+            });
+        } catch (error) {
+            console.error("Failed to fetch transactions:", error);
+            transactionList.innerHTML = "<li class='empty-state'>Error loading transactions.</li>";
+        }
+    }
+
+    async function handleDeleteTransaction(transactionId) {
+        if (!confirm("Are you sure you want to delete this transaction?")) {
+            return;
+        }
+
+        try {
+            await fetchWithAuth(`${API_BASE_URL}/transactions/${transactionId}`, {
+                method: "DELETE",
+            });
+            // Refresh the list after successful deletion
+            fetchAndDisplayTransactions(); 
+        } catch (error) {
+            console.error("Failed to delete transaction:", error);
+            alert(`Error: ${error.message}`);
+        }
+    }
+
+    async function handleDeleteAccount() {
+        const confirmation = prompt("This will permanently delete your account and all data. To confirm, please type 'DELETE' in the box below.");
+        if (confirmation !== "DELETE") {
+            alert("Deletion cancelled.");
+            return;
+        }
+
+        try {
+            const response = await fetchWithAuth(`${API_BASE_URL}/users/me`, { method: "DELETE" });
+            const result = await response.json();
+            alert(result.message);
+            
+            localStorage.removeItem("userToken");
+            window.location.href = "login.html";
+        } catch (error) {
+            console.error("Failed to delete account:", error);
+            alert(`Error deleting account: ${error.message}`);
         }
     }
 

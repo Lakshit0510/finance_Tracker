@@ -132,6 +132,80 @@ h3 { font-size: 0.875rem; font-weight: 600; margin-bottom: 1rem; color: var(--te
     border-top: 1px solid var(--border-color);
     background-color: var(--surface-color);
 }
+.transaction-list-container {
+    padding: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+#transaction-list {
+    list-style: none;
+    max-height: 200px; /* Limit height on mobile */
+    overflow-y: auto;
+}
+#transaction-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+#transaction-list li:last-child {
+    border-bottom: none;
+}
+.transaction-details {
+    display: flex;
+    flex-direction: column;
+}
+.transaction-class {
+    font-weight: 500;
+}
+.transaction-info {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+.transaction-amount.expense {
+    color: var(--danger-color);
+    font-weight: 600;
+}
+.transaction-amount.income {
+    color: var(--success-color);
+    font-weight: 600;
+}
+.delete-tx-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+}
+.delete-tx-btn:hover {
+    color: var(--danger-color);
+}
+.empty-state { 
+    color: var(--text-secondary); 
+    text-align: center; 
+    padding: 1rem 0; 
+}
+
+
+/* Danger Zone Styles */
+.danger-zone {
+    padding: 1.5rem;
+    background-color: #FFFBEB;
+    border-top: 1px solid var(--border-color);
+}
+.danger-zone h3 { color: #B45309; }
+.danger-zone p { font-size: 0.875rem; color: #78350F; margin-top: 0.75rem; }
+.btn-danger { background-color: var(--danger-color); color: white; width: 100%; }
+.btn-danger:hover { background-color: #B91C1C; }
+
+/* Desktop layout adjustment */
+@media (min-width: 800px) {
+    #transaction-list {
+        max-height: none; 
+    }
+}
 #query-input { flex-grow: 1; padding: 0.75rem 1.25rem; border-radius: 9999px; background: var(--background-color); }
 #send-btn { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 0; }
 #send-btn:hover { transform: scale(1.1); box-shadow: none; }
