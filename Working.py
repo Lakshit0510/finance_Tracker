@@ -174,7 +174,18 @@ def fetch_llm_response(query: str, userid: str, db: Session):
 
 # --- FASTAPI APP & ENDPOINTS ---
 app = FastAPI()
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
+# Replace the origins list
+origins = [
+    "https://finance-app-ncji.onrender.com", # Your frontend's URL
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "DELETE"], 
+    allow_headers=["Authorization", "Content-Type"], 
+)
 
 # --- AUTHENTICATION ENDPOINTS ---
 @app.post("/register", response_model=User)
