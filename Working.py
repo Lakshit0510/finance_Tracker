@@ -190,7 +190,36 @@ app.add_middleware(
 # --- AUTHENTICATION ENDPOINTS ---
 @app.post("/register", response_model=User)
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
-    if get_user(db, user.username): raise HTTPException(400, "Username already registered")
+    # --- Validation Block ---
+    password = user.password
+
+    # Check 1: Maximum length (prevents the 72-byte error)
+    if len(password.encode('utf-8')) > 72:
+        raise HTTPException(
+            status_code=400, 
+            detail="Password cannot be longer than 72 characters."
+        )
+
+    # Check 2: Minimum length
+    if len(password) < 8:
+        raise HTTPException(
+            status_code=400, 
+            detail="Password must be at least 8 characters long."
+        )
+
+    # Check 3: Complexity (e.g., must contain a number)
+    if not any(char.isdigit() for char in password):
+        raise HTTPException(
+            status_code=400, 
+            detail="Password must contain at least one number."
+        )
+    # --- End of Validation Block ---
+
+    # Check 4: See if username is already taken
+    if get_user(db, username=user.username): 
+        raise HTTPException(status_code=400, detail="Username already registered")
+
+    # If all checks pass, create the user
     return create_user(db=db, user=user)
 
 @app.post("/token", response_model=Token)
