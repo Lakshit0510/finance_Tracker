@@ -3,7 +3,7 @@
 A secure, full-stack financial management application that allows users to register, log in, manage personal transactions, and gain insights through a conversational AI and interactive data visualizations.
 
 <p align="center">
-  <a href="https://finance-tracker-web-iwx8.onrender.com"> <img src="https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge&logo=render" alt="Live Demo"/>
+  <a href="https://finance-app-ncji.onrender.com"> <img src="https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge&logo=render" alt="Live Demo"/>
   </a>
 </p>
 
