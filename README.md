@@ -52,7 +52,10 @@ For developers looking to contribute or run this project locally, a `.env` file 
 <p>DATABASE_URL="postgresql://YOUR_LOCAL_DB_USER:YOUR_PASSWORD@localhost/YOUR_DB_NAME"</p>
 <p>SECRET_KEY="YOUR_SUPER_SECRET_RANDOM_STRING"</p>
 <p>API_KEY="YOUR_AI_SERVICE_API_KEY_HERE"</p>
-<p>> **Note:** The `API_KEY` can be obtained from services like [asi1.ai](https://asi1.ai/dashboard/api-keys).</p>
+> **Note:** The `API_KEY` can be obtained from services like [asi1.ai](https://asi1.ai/dashboard/api-keys).
+
+---
+
 ## Contributing 🤝
 
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
