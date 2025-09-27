@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const transactionList = document.getElementById("transaction-list");
     const deleteAccountBtn = document.getElementById("delete-account-btn");
 
-    const API_BASE_URL = "https://finance-tracker-lbql.onrender.com";
+    const API_BASE_URL = "https://finance-tracker-78if.onrender.com";
 
     // --- Initial Setup ---
     fetchCurrentUser();
@@ -252,3 +252,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
