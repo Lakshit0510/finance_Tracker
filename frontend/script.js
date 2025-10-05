@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <span class="transaction-info">${tx.time}</span>
                     </div>
                     <div class="transaction-amount ${isExpense ? 'expense' : 'income'}">
-                        ${isExpense ? '-' : '+'}$${Math.abs(tx.amount).toFixed(2)}
+                        ${isExpense ? '-' : '+'}&#8377;${Math.abs(tx.amount).toFixed(2)}
                     </div>
                     <button class="delete-tx-btn" data-id="${tx.id}" title="Delete Transaction">&times;</button>
                 `;
@@ -252,6 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
 
 
 
