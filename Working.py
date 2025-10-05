@@ -150,7 +150,7 @@ def fetch_llm_response(query: str, userid: str, db: Session):
         return "AI service is not configured. Please set the API_KEY in your .env file."
 
     transactions = db_get_transactions_by_user(db, userid)
-    transaction_summary = "\n".join([f"- {tx.time}: {tx.class_name} ${tx.amount}" for tx in transactions])
+    transaction_summary = "\n".join([f"- {tx.time}: {tx.class_name} ₹{tx.amount}" for tx in transactions])
     
     system_prompt = "You are a helpful financial assistant. Analyze the user's query and the provided transaction data to give a clear and concise answer.Do no end with followup questions."
     user_prompt = f"User Query: \"{query}\"\n\nHere is my transaction history:\n{transaction_summary}"
